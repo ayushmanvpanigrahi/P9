@@ -1,0 +1,137 @@
+Practical 9
+
+
+Aim:-Use WCF to create a basic ASP.NET Asynchronous JavaScript and XML (AJAX) service.
+Step 1:-
+Open Microsoft visual studio → select create a new project
+
+Step 2:-
+Select ASP.NET Web Application(.NET Framework) to create a website → click on Next.
+
+Step 3:-
+Give the project name ‘Website3’ → click on create.
+
+Step 4:-
+Select Empty to create a empty website → click on create.
+
+Step 5:-
+Go to Solution Explorer → right-click → Select Add → New Item → Select WebForm
+→ Default.aspx page will open.
+
+Step 6:-
+Go to Solution Explorer → right-click →Select Add → New Item → Select AJAX Enabled WCF Service → Give name as GreetingService
+
+Step 7:-
+Open GreetingService.cs and define the function Greeting as shown below.
+
+---------------------------------------------------------------------------------------------------------------------------
+GreetingService.cs : 
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
+using System.Text;
+
+namespace Website3
+{
+    [ServiceContract(Namespace = "")]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    public class GreetingService
+    {
+        // To use HTTP GET, add [WebGet] attribute. (Default ResponseFormat is WebMessageFormat.Json)
+        // To create an operation that returns XML,
+        //     add [WebGet(ResponseFormat=WebMessageFormat.Xml)],
+        //     and include the following line in the operation body:
+        //         WebOperationContext.Current.OutgoingResponse.ContentType = "text/xml";
+        [OperationContract]
+        public void DoWork()
+        {
+            // Add your operation implementation here
+            return;
+        }
+        [OperationContract]
+        public string Greeting()
+        {
+            return "hello"; 
+            
+        }
+
+        // Add more operations here and mark them with [OperationContract]
+    }
+}
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Step 8:-
+Open WebForm1.aspx page and click in [Design option].
+
+Step 9:-
+From Toolbox, Drag and drop 1)Scriptmanager Control 2)Button
+
+Step 10:-
+Set value property of button as greet from properties window
+
+Step 11:-
+In the Design page right-click on Scriptmanager Control →Select Properties
+option→ select Services.
+
+Step 12:- 
+Set path → write GreetingService.
+
+Step 13:-
+Go to source option → write the following code.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Default.aspx:
+
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Website3.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+
+        
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+            <Services>
+                <asp:ServiceReference Path="~/GreetingService.svc.cs"
+            </Services>
+        </asp:ScriptManager>
+            <input type="button" value="greet" onclick="showgreeting()" />
+         </div>
+    </form>
+</body>
+        
+</html>
+
+<script language="javascript" type="text/javascript">
+    function showgreeting() {
+        GreetingService.Greeting(onSuccess, onError);
+    }
+
+    function onSuccess(response) {
+        alert(response);
+    }
+    function onError(error) {
+        alert("an error occurred" + error.get_message());
+    }
+
+</script>
+
+-----------------------------------------------------------------------------------------------------------------
+
+Step 14:-
+Run by right clicking on WebForm1.aspx in solution explorer → select view in
+browser.
