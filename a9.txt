@@ -1,0 +1,74 @@
+Practical 9
+
+ifconfig
+
+rpm -q nfs-utils
+
+mkdir /dato
+mkdir /alpho
+touch /dato/file1
+touch /dato/file2
+touch /alpho/file3
+touch /apho/file4
+
+vi /etc/exports
+
+/dato
+/alpho (rw,sync)
+
+
+
+systemctl restart rpcbind
+systemctl restart nfs
+systemctl status nfs
+systemctl stop firewalld
+
+chmod 777 /alpho
+
+
+
+client:-
+
+ifconfig
+
+rpm -q nfs-utils
+
+showmount -e 10.0.0.100
+
+mkdir localdirr1
+mkdir localdirr2
+mount -t nfs 10.0.0.100:/dato localdirr1
+mount -t nfs 10.0.0.100:/alpho localdirr2
+
+
+cd localdirr1
+ls
+cd ~
+cd localdirr2
+ls
+
+touch file5
+ls
+
+ls -l /alpho
+touch file6
+ls
+
+server :=
+
+ls -l /alpho
+
+vi /etc/exports
+/dato
+/alpho (rw,sync,no_root_squash)
+
+
+systemctl restart nfs
+
+client:-
+
+touch file7
+ls
+
+server:=
+ls -l /alpho
